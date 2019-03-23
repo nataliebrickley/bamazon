@@ -17,16 +17,15 @@ const connection = mysql.createConnection({
 
 connection.connect(err => {
     if (err) throw err;
-    afterConnection()
+    shop()
 });
 
-function afterConnection() {
+function shop() {
     //display the table
     connection.query("SELECT * FROM products", (err, res) => {
         if (err) throw err;
         console.log("\n")
         console.table(res);
-        //connection.end();
     })
     //ask user what they want to buy, and how many units
     inquirer.prompt([
@@ -85,7 +84,7 @@ function afterConnection() {
                             }
                         ]).then(function(response) {
                             if(response.shop) {
-                                afterConnection();
+                                shop();
                             }
                             else{connection.end()}
                         })
