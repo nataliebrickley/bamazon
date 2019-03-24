@@ -60,14 +60,14 @@ function manage() {
             connection.query("SELECT item_id, product_name FROM products", (err, res) => {
                 console.log("\n")
                 console.table(res);
-            })
+            
         //ask the user what, and how much they want to add
             inquirer.prompt([
                 {
                     name: "item_id",
                     message: "Select the id of the item that you would like to add to".yellow,
                     validate: function (input) {
-                        if (parseInt(input) <= 10) {
+                        if (parseInt(input) <= res.length) {
                             return true
                         }
                         else {
@@ -101,13 +101,72 @@ function manage() {
                         }
                     ], (err, res) => {
                         console.log("Item successfully updated!".yellow)
-                        done()
+                        connection.query("SELECT * FROM products where item_id = " + user_response.item_id, (err, update)=> {
+                            if (err) throw err;
+                            console.table(update)
+                            done()
+                        })
                     });
                  })
             })
+        })
         }
         //if they want to add new product
-
+        if(user_res.command === "Add new product") {
+            //ask the user for info regarding the product
+            inquirer.prompt([
+                {
+                    name: "product_name",
+                    message: "What product would you like to add?"
+                },
+                {
+                    name: "department_name",
+                    message: "What department does this item belong to?"
+                },
+                {
+                    name: "price",
+                    message: "How much does this product cost?",
+                    validate: function (input) {
+                        if (!isNaN(parseFloat(input))) {
+                            return true
+                        }
+                        else {
+                            return "Your response must be an integer".red
+                        }
+                    }
+                },
+                {
+                    name: "stock_quantity",
+                    message: "How many units of this item would you like to add?",
+                    validate: function (input) {
+                        if (Number.isInteger(parseFloat(input))) {
+                            return true
+                        }
+                        else {
+                            return "Your response must be an integer".red
+                        }
+                    }
+                }
+            ]).then(function(user_res){
+                //add the users input to the table
+                connection.query("INSERT INTO products SET ?", 
+                {
+                    product_name: user_res.product_name,
+                    department_name: user_res.department_name,
+                    price: user_res.price,
+                    stock_quantity: user_res.stock_quantity
+                },
+                (err, res) => {
+                    if (err) throw err
+                    console.log("Item successfully added!".yellow)
+                })
+                connection.query("SELECT * FROM products", (err, newItem)=> {
+                    if (err) throw err;
+                    console.table(newItem[newItem.length -1])
+                    done()
+                }) 
+            })
+        }
         //add new product
     })
     
@@ -115,12 +174,11 @@ function manage() {
 
 function done() {
     //Ask the user if they are done managing
-    console.log("\n")
     inquirer.prompt([
         {
             type: "confirm",
             name: "done",
-            message: "Anything else I can help you with?"
+            message: "Anything else I can help you with?".yellow
         }
     ]).then(function(user_res){
         if(user_res.done) {

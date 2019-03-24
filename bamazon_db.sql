@@ -11,9 +11,9 @@ CREATE TABLE products(
 );
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("TV", "Electronics", 500, 10), ("Monopoly", "Games", 35, 20), ("Toaster", "Appliances", 25, 15), 
-("Sandals", "Clothing", 15, 50), ("Yahtzee", "Games", 35, 15), ("Computer", "Electronics", 700, 9), 
-("Pencils", "Office Supplies", 3, 20), ("Lipstick", "Beauty", 6, 40), ("Cat Food", "Pet Supplies", 20, 16), 
-("Jeans", "Clothing", 25, 30);
+VALUES ("TV", "Electronics", 500, 5), ("Monopoly", "Games", 35, 10), ("Toaster", "Appliances", 25, 12), 
+("Sandals", "Clothing", 15, 20), ("Yahtzee", "Games", 35, 7), ("Computer", "Electronics", 700, 4), 
+("Pencils", "Office Supplies", 3, 13), ("Lipstick", "Beauty", 6, 6), ("Cat Food", "Pet Supplies", 20, 15), 
+("Jeans", "Clothing", 25, 3);
 
 SELECT * FROM products

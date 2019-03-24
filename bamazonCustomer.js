@@ -87,7 +87,10 @@ function shop() {
                             if(response.shop) {
                                 shop();
                             }
-                            else{connection.end()}
+                            else{
+                                console.log("Okay. Bye!".yellow)
+                                connection.end()
+                            }
                         })
                     })
                 }
