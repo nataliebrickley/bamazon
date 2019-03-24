@@ -33,9 +33,10 @@ function manage() {
         //if the user wants to view products
         if (user_res.command === "View Products for Sale") {
             //get the products list
-            connection.query("SELECT product_name FROM products", (err, res) => {
+            connection.query("SELECT * FROM products", (err, res) => {
                 if (err) throw err;
                 console.table(res)
+                done()
             })
         }
         //if they want to view low inventory
@@ -45,13 +46,13 @@ function manage() {
                 if (err) throw err;
                 //if an item's stock quantity <= 10...
                 for(let i=0; i<res.length; i++) {
-                    if(res[i].stock_quantity <= 10) {
+                    if(res[i].stock_quantity <= 5) {
                         //display the item's name and quantity
                         console.table(`${res[i].product_name}: ${res[i].stock_quantity}`)
                     }
                 }
+                done();
             })
-
         }
         //if they want to add to inventory
         if(user_res.command === "Add to Inventory") {
@@ -87,26 +88,47 @@ function manage() {
                     }
                 }
             ]).then(function(user_response) {
-                console.log(user_response)
                 //get the row of info with the id the user chose
                 connection.query("SELECT * FROM products WHERE item_id = " + user_response.item_id, (err, row_res)=> {
                     if (err) throw err;
                      //update this item's stock quantity
                     connection.query("UPDATE products SET ? WHERE ?", [
                         {
-                            stock_quantity: user_response.amount + row_res[0].stock_quantity
+                            stock_quantity: parseInt(user_response.amount) + row_res[0].stock_quantity
                         }, 
                         {
                             item_id: user_response.item_id
                         }
-                    ]);
-                    console.log("Item successfully updated!")
+                    ], (err, res) => {
+                        console.log("Item successfully updated!".yellow)
+                        done()
+                    });
                  })
-                
             })
         }
         //if they want to add new product
 
         //add new product
+    })
+    
+}
+
+function done() {
+    //Ask the user if they are done managing
+    console.log("\n")
+    inquirer.prompt([
+        {
+            type: "confirm",
+            name: "done",
+            message: "Anything else I can help you with?"
+        }
+    ]).then(function(user_res){
+        if(user_res.done) {
+            manage()
+        }
+        else{
+            console.log("Okay. Bye!".yellow)
+            connection.end();
+        }
     })
 }

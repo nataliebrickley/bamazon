@@ -75,7 +75,8 @@ function shop() {
                     (err, res) => {
                         if (err) throw err;
                         //notify the user of the price of their purchase
-                        console.log(`Your order has been placed. The cost of your purchase is ${row_res[0].price} dollars`.yellow)
+                        let cost = row_res[0].price * parseInt(user_response.amount)
+                        console.log(`Your order has been placed. The cost of your purchase is ${cost} dollars`.yellow)
                         inquirer.prompt([
                             {
                                 type: "confirm",
