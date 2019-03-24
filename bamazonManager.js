@@ -45,7 +45,7 @@ function manage() {
                 if (err) throw err;
                 //if an item's stock quantity <= 10...
                 for(let i=0; i<res.length; i++) {
-                    if(res[i].stock_quantity <= 50) {
+                    if(res[i].stock_quantity <= 10) {
                         //display the item's name and quantity
                         console.table(`${res[i].product_name}: ${res[i].stock_quantity}`)
                     }
@@ -53,16 +53,60 @@ function manage() {
             })
 
         }
-
         //if they want to add to inventory
-
-        //add to inventory
-
+        if(user_res.command === "Add to Inventory") {
+            //show the table of items
+            connection.query("SELECT item_id, product_name FROM products", (err, res) => {
+                console.log("\n")
+                console.table(res);
+            })
+        //ask the user what, and how much they want to add
+            inquirer.prompt([
+                {
+                    name: "item_id",
+                    message: "Select the id of the item that you would like to add to".yellow,
+                    validate: function (input) {
+                        if (parseInt(input) <= 10) {
+                            return true
+                        }
+                        else {
+                            return "Please enter a valid id".red
+                        }
+                    }
+                },
+                {
+                    name: "amount",
+                    message: "How many units would you like to add?",
+                    validate: function (input) {
+                        if (Number.isInteger(parseFloat(input))) {
+                            return true
+                        }
+                        else {
+                            return "Your response must be an integer".red
+                        }
+                    }
+                }
+            ]).then(function(user_response) {
+                console.log(user_response)
+                //get the row of info with the id the user chose
+                connection.query("SELECT * FROM products WHERE item_id = " + user_response.item_id, (err, row_res)=> {
+                    if (err) throw err;
+                     //update this item's stock quantity
+                    connection.query("UPDATE products SET ? WHERE ?", [
+                        {
+                            stock_quantity: user_response.amount + row_res[0].stock_quantity
+                        }, 
+                        {
+                            item_id: user_response.item_id
+                        }
+                    ]);
+                    console.log("Item successfully updated!")
+                 })
+                
+            })
+        }
         //if they want to add new product
 
         //add new product
-    })
-    connection.query("SELECT * FROM products", (err, res) => {
-        return true
     })
 }
