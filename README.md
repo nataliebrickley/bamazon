@@ -13,4 +13,5 @@ The manager view can be accessed using the command *node bamazonManager.js*. Whe
 [![Image from Gyazo](https://i.gyazo.com/ddb42ec790ee1dd009cbfdcb5837ae7f.gif)](https://gyazo.com/ddb42ec790ee1dd009cbfdcb5837ae7f)    
 3. Choosing *Add to Inventory* will prompt the user to choose which item they would like to add, and how many units. Once this information is entered, the products table will be updated to reflect this addition.  
 [![Image from Gyazo](https://i.gyazo.com/868c00410675743ef4f161a86affec53.gif)](https://gyazo.com/868c00410675743ef4f161a86affec53)    
-4. Choosing *Add new product* will allow the manager to add a completely new product to the store.
+4. Choosing *Add new product* will allow the manager to add a completely new product to the store. The user will be asked what product they would like to add, what department it belongs to, how much it will cost, and how many units of the item they would like to add. Once this information is entered, the products table will be updated to reflect the addition of the new product.  
+[![Image from Gyazo](https://i.gyazo.com/19795b1f0de9042e394261906bdd3e2a.gif)](https://gyazo.com/19795b1f0de9042e394261906bdd3e2a)
