@@ -55,9 +55,11 @@ function shop() {
     ]).then(function (user_response) {
         //select the item the user chose from the table
         connection.query("SELECT * FROM products WHERE item_id = " + user_response.item_id, (err, row_res) => {
+            //console.log(row_res);
             if (err) throw err;
             //check to see if there is enough of the item to be purchased:
             //if there is NOT enough of the item...
+            
             else if (row_res[0].stock_quantity < user_response.amount) {
                 console.log("Insufficienct Quantity!".red)
                 connection.end()

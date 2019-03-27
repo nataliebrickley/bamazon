@@ -131,7 +131,7 @@ function manage() {
                             return true
                         }
                         else {
-                            return "Your response must be an integer".red
+                            return "Your response must be an number with at most 2 decimal places".red
                         }
                     }
                 },

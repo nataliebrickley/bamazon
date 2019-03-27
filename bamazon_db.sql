@@ -16,4 +16,15 @@ VALUES ("TV", "Electronics", 500, 5), ("Monopoly", "Games", 35, 10), ("Toaster",
 ("Pencils", "Office Supplies", 3, 13), ("Lipstick", "Beauty", 6, 6), ("Cat Food", "Pet Supplies", 20, 15), 
 ("Jeans", "Clothing", 25, 3);
 
-SELECT * FROM products
+SELECT * FROM products;
+
+ -- Departments:
+ CREATE TABLE departments(
+	department_id INT AUTO_INCREMENT NOT NULL,
+    department_name VARCHAR(35) NOT NULL,
+    over_head_costs INT(10) NOT NULL,
+    PRIMARY KEY(department_id)
+ );
+ SELECT departments.department_id, products.department_name, departments.over_head_costs
+ FROM products
+ INNER JOIN departments ON products.department_name = departments.department_name;
